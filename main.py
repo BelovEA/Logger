@@ -66,6 +66,9 @@ class Logger:
             self.fill_date()
             f.write(f'[{Logger.hour}:{Logger.minute}:{Logger.second}] {event} \n')
 
+    def clear_log(self):
+        with open(self.full_file_path(), 'w'):
+            pass
 
 l = Logger("Logs")
 l.write_log('Some danger event')
