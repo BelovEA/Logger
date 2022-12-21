@@ -18,11 +18,13 @@ class Logger:
     def __init__(self, path="./"):
         Logger.fill_date()
         Logger.path = path
-        "если директория path не существует, тогда создаём"
-        if path != "./":
-            if not os.path.dirname(path):
+        "если директория path не существует, тогда создаёмб если существует - скипаем команды"
+        if path != ".":
+            if not os.path.exists(path):
                 os.makedirs(f"./{path}")
-        with open(f"{path}log_{Logger.day}.{Logger.month}.{Logger.year}.log", "w"):
+            Logger.path = f'./{path}'
+
+        with open(f"{path}/log_{Logger.day}.{Logger.month}.{Logger.year}.log", "w"):
             pass
 
 
