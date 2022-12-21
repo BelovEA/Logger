@@ -2,8 +2,6 @@ import os
 import datetime
 
 
-
-
 class Logger:
     day = 0
     month = 0
@@ -11,11 +9,10 @@ class Logger:
     hour = 0
     minute = 0
     second = 0
-    path = ''
+    path = None
+    current_file = None
 
-
-
-    def __init__(self, path="./"):
+    def __init__(self, path="."):
         Logger.fill_date()
         Logger.path = path
         "если директория path не существует, тогда создаёмб если существует - скипаем команды"
@@ -23,9 +20,11 @@ class Logger:
             if not os.path.exists(path):
                 os.makedirs(f"./{path}")
             Logger.path = f'./{path}'
+        Logger.current_file = f"log_{Logger.day}.{Logger.month}.{Logger.year}.log"
 
-        with open(f"{path}/log_{Logger.day}.{Logger.month}.{Logger.year}.log", "w"):
-            pass
+        if not os.path.exists(Logger.full_file_path()):
+            with open(f"{path}/{Logger.current_file}", "w"):
+                pass
 
     @staticmethod
     def today():
@@ -47,5 +46,17 @@ class Logger:
         cls.minute = current_date.get('minute')
         cls.second = current_date.get('second')
 
-l = Logger("Logs")
+    @classmethod
+    def full_file_path(cls):
+        return cls.path + '/' + cls.current_file
 
+    def write_log(self, event):
+        with open(self.full_file_path(), 'a', encoding='UTF-8') as f:
+            self.fill_date()
+            f.write(f'[{Logger.hour}:{Logger.minute}:{Logger.second}] {event} \n')
+
+
+l = Logger("Logs")
+l.write_log('Some danger event')
+l.write_log("It's OK")
+print()
