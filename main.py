@@ -18,6 +18,10 @@ class Logger:
     def __init__(self, path="./"):
         Logger.fill_date()
         Logger.path = path
+        "если директория path не существует, тогда создаём"
+        if path != "./":
+            if not os.path.dirname(path):
+                os.makedirs(f"./{path}")
         with open(f"{path}log_{Logger.day}.{Logger.month}.{Logger.year}.log", "w"):
             pass
 
@@ -32,5 +36,5 @@ class Logger:
         Logger.minute = current_date.minute
         Logger.second = current_date.second
 
-l = Logger("add/logs")
+l = Logger("Logs")
 
