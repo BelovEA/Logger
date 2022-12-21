@@ -32,4 +32,5 @@ class Logger:
         Logger.minute = current_date.minute
         Logger.second = current_date.second
 
-l = Logger()
+l = Logger("add/logs")
+
