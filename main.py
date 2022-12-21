@@ -27,16 +27,25 @@ class Logger:
         with open(f"{path}/log_{Logger.day}.{Logger.month}.{Logger.year}.log", "w"):
             pass
 
+    @staticmethod
+    def today():
+        current_date = datetime.datetime.now()
+        return {'day': current_date.day,
+                'month': current_date.month,
+                'year': current_date.year,
+                'hour': current_date.hour,
+                'minutes': current_date.minute,
+                'seconds': current_date.second}
 
     @classmethod
-    def fill_date(self):
-        current_date = datetime.datetime.now()
-        Logger.day = current_date.day
-        Logger.month = current_date.month
-        Logger.year = current_date.year
-        Logger.hour = current_date.hour
-        Logger.minute = current_date.minute
-        Logger.second = current_date.second
+    def fill_date(cls):
+        current_date = cls.today()
+        cls.day = current_date.get('day')
+        cls.month = current_date.get('month')
+        cls.year = current_date.get('year')
+        cls.hour = current_date.get('hour')
+        cls.minute = current_date.get('minute')
+        cls.second = current_date.get('second')
 
 l = Logger("Logs")
 
