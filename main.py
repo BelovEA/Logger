@@ -9,8 +9,8 @@ class Logger:
     hour = 0
     minute = 0
     second = 0
-    path = None
-    current_file = None
+    path = 0
+    current_file = 0
 
     def __init__(self, path="."):
         Logger.fill_date()
@@ -20,12 +20,13 @@ class Logger:
             if not os.path.exists(path):
                 os.makedirs(f"./{path}")
             Logger.path = f'./{path}'
+        Logger.create_new_log_file()
+    @classmethod
+    def create_new_log_file(cls):
         Logger.current_file = f"log_{Logger.day}.{Logger.month}.{Logger.year}.log"
-
         if not os.path.exists(Logger.full_file_path()):
-            with open(f"{path}/{Logger.current_file}", "w"):
+            with open(Logger.full_file_path(), "w"):
                 pass
-
     @staticmethod
     def today():
         current_date = datetime.datetime.now()
@@ -50,7 +51,17 @@ class Logger:
     def full_file_path(cls):
         return cls.path + '/' + cls.current_file
 
+
+    @classmethod
+    def check_day(cls):
+        if cls.day != cls.today().get("day"):
+            return True
+
     def write_log(self, event):
+        if Logger.check_day():
+            Logger.fill_date()
+            Logger.create_new_log_file()
+
         with open(self.full_file_path(), 'a', encoding='UTF-8') as f:
             self.fill_date()
             f.write(f'[{Logger.hour}:{Logger.minute}:{Logger.second}] {event} \n')
