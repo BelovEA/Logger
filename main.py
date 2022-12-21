@@ -2,15 +2,20 @@ import os
 import datetime
 
 
-class Logger:
+class Logger(object):
     day = 0
     month = 0
     year = 0
     hour = 0
     minute = 0
     second = 0
-    path = 0
-    current_file = 0
+    path = None
+    current_file = None
+
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(Logger, cls).__new__(cls)
+        return cls.instance
 
     def __init__(self, path="."):
         Logger.fill_date()
@@ -21,12 +26,14 @@ class Logger:
                 os.makedirs(f"./{path}")
             Logger.path = f'./{path}'
         Logger.create_new_log_file()
+
     @classmethod
     def create_new_log_file(cls):
         Logger.current_file = f"log_{Logger.day}.{Logger.month}.{Logger.year}.log"
         if not os.path.exists(Logger.full_file_path()):
             with open(Logger.full_file_path(), "w"):
                 pass
+
     @staticmethod
     def today():
         current_date = datetime.datetime.now()
@@ -51,7 +58,6 @@ class Logger:
     def full_file_path(cls):
         return cls.path + '/' + cls.current_file
 
-
     @classmethod
     def check_day(cls):
         if cls.day != cls.today().get("day"):
@@ -69,6 +75,7 @@ class Logger:
     def clear_log(self):
         with open(self.full_file_path(), 'w'):
             pass
+
     def get_logs(self):
         with open(self.full_file_path(), 'r', encoding='UTF-8') as f:
             return f.readlines()
@@ -77,9 +84,10 @@ class Logger:
         with open(self.full_file_path(), 'r', encoding='UTF-8') as f:
             return f.readlines()[-1]
 
-    def get_all_logs(self):
+    @classmethod
+    def get_all_logs(cls):
         log_files = []
-        for file in os.listdir(Logger.path):
+        for file in os.listdir(cls.path):
             if file.startswith('log_'):
                 log_files.append(file)
         return log_files
