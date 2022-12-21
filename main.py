@@ -69,6 +69,21 @@ class Logger:
     def clear_log(self):
         with open(self.full_file_path(), 'w'):
             pass
+    def get_logs(self):
+        with open(self.full_file_path(), 'r', encoding='UTF-8') as f:
+            return f.readlines()
+
+    def get_last_event(self):
+        with open(self.full_file_path(), 'r', encoding='UTF-8') as f:
+            return f.readlines()[-1]
+
+    def get_all_logs(self):
+        log_files = []
+        for file in os.listdir(Logger.path):
+            if file.startswith('log_'):
+                log_files.append(file)
+        return log_files
+
 
 l = Logger("Logs")
 l.write_log('Some danger event')
