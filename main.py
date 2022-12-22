@@ -20,7 +20,6 @@ class Logger(object):
     def __init__(self, path="."):
         Logger.fill_date()
         Logger.path = path
-        "если директория path не существует, тогда создаёмб если существует - скипаем команды"
         if path != ".":
             if not os.path.exists(path):
                 os.makedirs(f"./{path}")
@@ -41,8 +40,8 @@ class Logger(object):
                 'month': current_date.month,
                 'year': current_date.year,
                 'hour': current_date.hour,
-                'minutes': current_date.minute,
-                'seconds': current_date.second}
+                'minute': current_date.minute,
+                'second': current_date.second}
 
     @classmethod
     def fill_date(cls):
