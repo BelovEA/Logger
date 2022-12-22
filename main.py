@@ -93,7 +93,9 @@ class Logger(object):
         return log_files
 
 
-l = Logger("Logs")
+l = Logger()
+l2 = Logger()
+
 l.write_log('Some danger event')
 l.write_log("It's OK")
 print()
